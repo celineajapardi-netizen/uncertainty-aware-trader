@@ -1,6 +1,6 @@
 # When Should an Algorithm Trade?
 
-**When Should an Algorithm Trade?** is a trading simulation I built in Python to investigate whether an algorithm should act on a prediction when it is not confident in it — and how to tell whether its confidence means anything at all.
+**Uncertainty Aware Trading** is a trading simulation I built in Python to investigate whether an algorithm should act on a prediction when it is not confident in it — and how to tell whether its confidence means anything at all.
 
 Most AI trading projects try to predict whether a price goes up and report how much money the model would have made. I wanted to ask a different question. My model produces two numbers every day: a **prediction** (expected return tomorrow) and a **confidence** (how sure it is about the direction). I then compare three decision rules that treat that confidence differently, on both a simulated market and real market data.
 
