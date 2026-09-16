@@ -4,6 +4,9 @@
 
 Most AI trading projects try to predict whether a price goes up and report how much money the model would have made. I wanted to ask a different question. My model produces two numbers every day: a **prediction** (expected return tomorrow) and a **confidence** (how sure it is about the direction). I then compare three decision rules that treat that confidence differently, on both a simulated market and real market data.
 
+## Live Demo
+**Open the interactive Streamlit dashboard : https://uncertainty-aware-trader-fvy7vrbdgz9uxxkjfgyami.streamlit.app**
+
 ## Dashboard
 
 ```bash
