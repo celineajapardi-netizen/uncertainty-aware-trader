@@ -67,10 +67,6 @@ The main challenge was making the backtest honest. It is easy to write a backtes
 
 If I continue the project, I would like to try a weekly prediction horizon (where costs matter less), test alternative confidence measures, use different thresholds in calm and turbulent market regimes, and explore where the crossover point is between transaction cost and the benefit of filtering.
 
-## Notes
-
-All data is public or simulated, and nothing here is investment advice. The real-data result — that a simple daily model is a coin flip and costs eat everything — is the normal outcome, and the project is more useful for showing that clearly than for hiding it.
-
 ---
 
 *Developed by Celine Angelica Japardi*
