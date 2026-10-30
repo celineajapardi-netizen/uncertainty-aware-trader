@@ -20,25 +20,25 @@ The interactive dashboard brings the entire experiment together, allowing users 
 
 Displays the latest market signals, predicted returns, model confidence and the decisions each trading strategy would make.
 
-![Market Overview](screenshots/01-dashboard-overview.png)
+![Market Overview](01-dashboard-overview.png)
 
 ### 2. Strategy Performance
 
 Visualises the growth of an initial investment across four strategies, making it easier to compare returns, volatility and risk-adjusted performance.
 
-![Strategy Performance](screenshots/02-strategy-performance.png)
+![Strategy Performance](02-strategy-performance.png)
 
 ### 3. Confidence Analysis
 
 Explores how changing the minimum confidence threshold affects the Sharpe ratio, trading frequency and prediction accuracy. It also examines whether the model's confidence is properly calibrated.
 
-![Confidence Analysis](screenshots/03-confidence-analysis.png)
+![Confidence Analysis](03-confidence-analysis.png)
 
 ### 4. Decision Timeline
 
 Tracks the algorithm's trading decisions over time, showing when it chooses to enter, exit or hold positions based on its predictions and confidence.
 
-![Decision Timeline](screenshots/04-decision-timeline.png)
+![Decision Timeline](04-decision-timeline.png)
 
 ### Interactive Controls
 
