@@ -1,72 +1,104 @@
+
 # When Should an Algorithm Trade?
+### Exploring Uncertainty in Algorithmic Trading
 
-**Uncertainty Aware Trading** is a trading simulation I built in Python to investigate whether an algorithm should act on a prediction when it is not confident in it — and how to tell whether its confidence means anything at all.
+**Uncertainty-Aware Trading** is an independent Python project exploring how prediction confidence can influence algorithmic trading decisions.
 
-Most AI trading projects try to predict whether a price goes up and report how much money the model would have made. I wanted to ask a different question. My model produces two numbers every day: a **prediction** (expected return tomorrow) and a **confidence** (how sure it is about the direction). I then compare three decision rules that treat that confidence differently, on both a simulated market and real market data.
+Instead of focusing solely on predicting market movements, I wanted to investigate a different question: *Does knowing when a model is uncertain lead to better trading decisions?*
+
+I built an ensemble-based prediction model that estimates next-day returns and measures confidence through model agreement. I then compared different trading strategies across simulated and real financial markets.
 
 ## Live Demo
-**Open the interactive Streamlit dashboard : https://uncertainty-aware-trader-fvy7vrbdgz9uxxkjfgyami.streamlit.app**
+
+**[Explore the Interactive Streamlit Dashboard](https://uncertainty-aware-trader-fvy7vrbdgz9uxxkjfgyami.streamlit.app)**
 
 ## Dashboard
 
+The interactive dashboard brings the entire experiment together, allowing users to adjust model parameters, explore market conditions and compare trading strategies in real time.
+
+### 1. Market Overview
+
+Displays the latest market signals, predicted returns, model confidence and the decisions each trading strategy would make.
+
+![Market Overview](screenshots/01-dashboard-overview.png)
+
+### 2. Strategy Performance
+
+Visualises the growth of an initial investment across four strategies, making it easier to compare returns, volatility and risk-adjusted performance.
+
+![Strategy Performance](screenshots/02-strategy-performance.png)
+
+### 3. Confidence Analysis
+
+Explores how changing the minimum confidence threshold affects the Sharpe ratio, trading frequency and prediction accuracy. It also examines whether the model's confidence is properly calibrated.
+
+![Confidence Analysis](screenshots/03-confidence-analysis.png)
+
+### 4. Decision Timeline
+
+Tracks the algorithm's trading decisions over time, showing when it chooses to enter, exit or hold positions based on its predictions and confidence.
+
+![Decision Timeline](screenshots/04-decision-timeline.png)
+
+### Interactive Controls
+
+Users can experiment with:
+- Simulated markets or real market data (SPY, AAPL and BTC-USD).
+- Market signal strength and simulation duration.
+- Model training window and ensemble size.
+- Confidence thresholds and transaction costs.
+- Trading constraints and strategy configurations.
+
+## What It Does
+
+- **Ensemble Modelling:** Combines 50 models to predict returns and estimate directional confidence.
+- **Trading Strategies:** Compares Buy & Hold, Always Trade, Confidence Filter and Risk-Aware approaches.
+- **Market Simulation:** Tests confidence-based decisions under different levels of predictability.
+- **Real Market Data:** Evaluates strategies using historical financial data.
+- **Confidence Calibration:** Tests whether higher model confidence corresponds to greater accuracy.
+- **Risk Analysis:** Evaluates Sharpe ratio, maximum drawdown, volatility and cumulative returns.
+- **Backtesting & Testing:** Implements walk-forward backtesting, transaction costs and 16 automated tests.
+
+## Key Findings
+
+The experiments revealed an interesting contrast between simulated and real markets.
+
+- **Simulated Market:** Confidence-aware strategies improved risk-adjusted performance, with the Risk-Aware strategy achieving a Sharpe ratio of 3.42 in the displayed experiment.
+- **Real Market:** Directional accuracy was approximately 51%, while model confidence showed limited ability to distinguish correct predictions from incorrect ones.
+
+**The main takeaway:** A model being confident does not necessarily mean it is correct. Confidence is only useful when it reflects genuine predictive ability.
+
+## Built With
+
+Python · NumPy · pandas · Streamlit · Matplotlib · yfinance · pytest
+
+## Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/YOUR-USERNAME/uncertainty-trader.git
+cd uncertainty-trader
+```
+
+Install dependencies:
+
 ```bash
 pip install -r requirements.txt
+```
+
+Run the dashboard:
+
+```bash
 streamlit run app.py
 ```
 
-The dashboard lets you switch between simulated and real data (SPY, AAPL, BTC-USD), change the confidence threshold, transaction cost, training window and ensemble size, and see the equity curves, calibration plot and trading decisions update live.
+## Future Improvements
 
-## Features
+Explore alternative uncertainty measures, adaptive confidence thresholds, different prediction horizons and improved model calibration.
 
-- **Prediction + Confidence** — an ensemble of 50 small models; confidence is the share of models that agree on the direction
-- **Three decision rules** — Always Trade, Confidence Filter (hold when unsure), and Risk-Aware (scale the bet by confidence and volatility)
-- **Buy & Hold benchmark** — the baseline every active strategy has to beat
-- **Simulated market** — a market with a known, adjustable amount of predictability, used as a control experiment
-- **Real market data** — daily prices for SPY, AAPL and BTC-USD from 2012 to 2026
-- **Calibration check** — does "90 % confident" actually mean right 90 % of the time?
-- **Honest backtest** — walk-forward only, one-day holding lag, transaction costs on every trade
-- **Test suite** — 16 tests that check the model cannot see the future and that costs are accounted for correctly
-- **Reproducible results** — one script regenerates every table and figure in `results/`
+## Author
 
-## Concept
+**Celine Angelica Japardi**
 
-The project treats confidence as something to be tested, not assumed.
-
-In the simulated market I control exactly how predictable prices are, so I can check whether the model's confidence is *calibrated* before trusting it. Then I run the same code on real data, where the truth is unknown, and see whether the same rules still help.
-
-The aim is to find out which rule makes better **risk-adjusted** decisions — Sharpe ratio, drawdown, how often the strategy is in the market — not which one ends with the biggest number.
-
-## What I found
-
-The two markets give opposite answers, and the reason is the point of the project.
-
-- **Simulated market (confidence is honest):** refusing to trade when unsure improves the Sharpe ratio and cuts drawdowns. The Risk-Aware rule was best in every run, mainly by reducing volatility rather than earning more.
-- **Real market (confidence is not):** the model's direction accuracy is about 51 % — a coin flip — and its confidence carries no information. A "95 % confident" day is right no more often than a "55 %" one. Nothing built on that confidence can work, and transaction costs do the rest.
-
-Same code, same rules — the only difference is calibration. **A model's confidence is only worth acting on if it has been shown to be right.**
-
-This connects to my other research project on human trust in AI, which asks the mirror question: whether *people* trust a confident-sounding AI answer more, regardless of whether it is correct.
-
-## Development
-
-I built the whole pipeline from scratch in Python — data loading, features, the ensemble model, the strategies, the backtest, the metrics and the plots — so that I could explain every line without relying on a machine-learning library.
-
-The main challenge was making the backtest honest. It is easy to write a backtest that accidentally uses tomorrow's prices, or that ignores costs, and then reports results that look far better than they are. Most of the test suite exists to guard against exactly that.
-
-## Technologies
-
-- **Python**
-- **NumPy / pandas** — data handling and a closed-form ridge regression
-- **Streamlit** — interactive dashboard
-- **Matplotlib** — figures
-- **yfinance** — public market data
-- **pytest** — test suite
-- Quantitative finance, backtesting, model calibration
-
-## Future Development
-
-If I continue the project, I would like to try a weekly prediction horizon (where costs matter less), test alternative confidence measures, use different thresholds in calm and turbulent market regimes, and explore where the crossover point is between transaction cost and the benefit of filtering.
-
----
-
-*Developed by Celine Angelica Japardi*
+Independent Project | Quantitative Finance & Machine Learning
